@@ -1,1 +1,1 @@
-worker: node scrape-twitter.js
+web: node server.js
