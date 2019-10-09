@@ -30,7 +30,7 @@
     "build": "rimraf dist && babel src --out-dir dist",
     "push": "git push --follow-tags origin master",
     "release": "npm test && npm run -s build && standard-version && npm run -s push && npm publish",
-    "start": "node scrape-twitter.js -c 1000 elonmusk"
+    "start": "node server.js"
   },
   "dependencies": {
     "JSONStream": "^1.3.4",
