@@ -5,6 +5,18 @@ const execa = require('execa')
 app.set('view engine', 'ejs')
 app.use(bodyParser.urlencoded({ extended: true }));
 
+const scrapeTwitter = require('./src')
+
+const {
+  TimelineStream,
+  LikeStream,
+  ConnectionStream,
+  ConversationStream,
+  TweetStream,
+  ListStream,
+  getUserProfile
+} = scrapeTwitter
+
 app.get('/', function (req, res) {
   res.render('index')
 })
@@ -12,11 +24,10 @@ app.get('/', function (req, res) {
 app.post('/', function (req, res) {
     let handle = req.body.handle;
     console.log('Scraping: ' + handle);
-    const command = execa('scrape-twitter-timeline', [handle, '-c', 10])
-    command.stdout.pipe(process.stdout)
-    command.stderr.pipe(process.stderr)
+    const timelineStream = new TimelineStream(handle, false, true, 10, process.env)
+    console.log(timelineStream._read())
 })
 port = process.env.PORT || 80;
-app.listen(port, function () {
-  console.log('Example app listening on port ${port}!')
+app.listen(3000, function () {
+  console.log('Example app listening on port ' + port)
 })
