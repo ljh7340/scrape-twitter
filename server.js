@@ -16,7 +16,7 @@ app.post('/', function (req, res) {
     command.stdout.pipe(process.stdout)
     command.stderr.pipe(process.stderr)
 })
-
-app.listen(3000, function () {
+port = process.env.PORT || 80;
+app.listen(port, function () {
   console.log('Example app listening on port 3000!')
 })
