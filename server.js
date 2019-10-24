@@ -25,8 +25,9 @@ app.post('/', function (req, res) {
     let handle = req.body.handle;
     console.log('Scraping: ' + handle);
     const timelineStream = new TimelineStream(handle, false, true, 10, process.env)
-    console.log(timelineStream._read())
-})
+    console.log(timelineStream._read()) //is this being fed one at a time or in a block of text?
+    //var process = spawn('python',["./hello.py", req.query.SOMEKINDOFVARIABLE] );
+  })
 port = process.env.PORT || 3000;
 app.listen(port, function () {
   console.log('Example app listening on port ' + port)
