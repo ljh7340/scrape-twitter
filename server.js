@@ -27,7 +27,7 @@ app.post('/', function (req, res) {
     const timelineStream = new TimelineStream(handle, false, true, 10, process.env)
     console.log(timelineStream._read())
 })
-port = process.env.PORT || 80;
+port = process.env.PORT || 3000;
 app.listen(port, function () {
   console.log('Example app listening on port ' + port)
 })
