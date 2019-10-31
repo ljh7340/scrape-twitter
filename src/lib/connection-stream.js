@@ -5,13 +5,14 @@ const login = require('./twitter-login')
 const twitterQuery = require('./twitter-query')
 
 class ConnectionStream extends Readable {
-  isLocked = false
-
-  _numberOfConnectionsRead = 0
-  _lastMinPosition = undefined
+  
 
   constructor (username, type, env = {}) {
     super({ objectMode: true })
+    isLocked = false
+
+  _numberOfConnectionsRead = 0
+  _lastMinPosition = undefined
     this.username = username
     this.type = type
     this.env = env

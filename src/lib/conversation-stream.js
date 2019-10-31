@@ -6,14 +6,15 @@ const twitterQuery = require('./twitter-query')
 const flatten = arr => arr.reduce((prev, curr) => prev.concat(curr), [])
 
 class ConversationStream extends Readable {
-  isLocked = false
+  
+
+  constructor (username, id, { count } = {}) {
+    super({ objectMode: true })
+    isLocked = false
 
   _numberOfTweetsRead = 0
   _lastMinPosition = undefined
   _lastReadTweetId = undefined
-
-  constructor (username, id, { count } = {}) {
-    super({ objectMode: true })
     this.username = username
     this.id = id
     this.count = count

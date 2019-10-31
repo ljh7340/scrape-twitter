@@ -8,13 +8,14 @@ const loginWithOptionalEnv = (env = {}) =>
   Object.keys(env).length ? twitterLogin(env) : Promise.resolve()
 
 class MediaTimelineStream extends Readable {
-  isLocked = false
-
-  _numberOfTweetsRead = 0
-  _lastReadTweetId = undefined
+  
 
   constructor (username, { count, env } = {}) {
     super({ objectMode: true })
+    isLocked = false
+
+  _numberOfTweetsRead = 0
+  _lastReadTweetId = undefined
     this.username = username
     this.count = count
     this.env = env

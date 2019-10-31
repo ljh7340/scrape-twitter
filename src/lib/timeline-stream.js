@@ -5,16 +5,17 @@ const twitterLogin = require('./twitter-login')
 const twitterQuery = require('./twitter-query')
 
 const loginWhenReplies = (replies, env = {}) =>
-  replies ? twitterLogin(env) : Promise.resolve()
+  replies ? twitterLogin(env) : Promise.resolve();
 
 class TimelineStream extends Readable {
-  isLocked = false
 
-  _numberOfTweetsRead = 0
-  _lastReadTweetId = undefined
+  
 
   constructor (username, { retweets, replies, count, env } = {}) {
     super({ objectMode: true })
+    this.isLocked = false
+    this._numberOfTweetsRead = 0
+    this._lastReadTweetId = undefined
     this.username = username
     this.retweets = retweets == null ? false : retweets
     this.replies = replies == null ? false : replies
@@ -25,26 +26,27 @@ class TimelineStream extends Readable {
       replies: this.replies,
       count: this.count
     })
+    console.log(`TimelineStream for ${this.username} created`)
   }
 
   _read () {
     if (this.isLocked) {
-      debug('TimelineStream cannot be read as it is locked')
+      console.log('TimelineStream cannot be read as it is locked')
       return false
     }
     if (!!this.count && this._numberOfTweetsRead >= this.count) {
-      debug('TimelineStream has read up to the max count')
+      console.log('TimelineStream has read up to the max count')
       this.push(null)
       return false
     }
     if (this._readableState.destroyed) {
-      debug('TimelineStream cannot be read as it is destroyed')
+      console.log('TimelineStream cannot be read as it is destroyed')
       this.push(null)
       return false
     }
 
     this.isLocked = true
-    debug('TimelineStream is now locked')
+    console.log('TimelineStream is now locked')
 
     debug(
       `TimelineStream reads timeline${
@@ -64,7 +66,7 @@ class TimelineStream extends Readable {
             let lastReadTweetId
             for (const tweet of tweets) {
               if (this.retweets === false && tweet.isRetweet) {
-                debug(`tweet ${tweet.id} was skipped as it is a retweet`)
+                console.log(`tweet ${tweet.id} was skipped as it is a retweet`)
                 continue // Skip retweet.
               }
               lastReadTweetId = tweet.id
@@ -72,7 +74,7 @@ class TimelineStream extends Readable {
               this.push(tweet)
               this._numberOfTweetsRead++
               if (this._numberOfTweetsRead >= this.count) {
-                debug('TimelineStream has read up to the max count')
+                console.log('TimelineStream has read up to the max count')
                 break
               }
             }
@@ -84,28 +86,28 @@ class TimelineStream extends Readable {
               this._lastReadTweetId !== lastReadTweetId
             const hasMoreTweets = !hasZeroTweets && hasDifferentLastTweet
             if (hasMoreTweets === false) {
-              debug('TimelineStream has no more tweets:', {
+              console.log('TimelineStream has no more tweets:', {
                 hasZeroTweets,
                 hasDifferentLastTweet,
                 hasMoreTweets
               })
               this.push(null)
             } else {
-              debug('TimelineStream has more tweets:', {
+              console.log('TimelineStream has more tweets:', {
                 hasZeroTweets,
                 hasDifferentLastTweet,
                 hasMoreTweets
               })
             }
 
-            debug(`TimelineStream sets the last tweet to ${lastReadTweetId}`)
+            console.log(`TimelineStream sets the last tweet to ${lastReadTweetId}`)
             this._lastReadTweetId = lastReadTweetId
 
             this.isLocked = false
-            debug('TimelineStream is now unlocked')
+            console.log('TimelineStream is now unlocked')
 
             if (hasMoreTweets) {
-              debug('TimelineStream has more tweets so calls this._read')
+              console.log('TimelineStream has more tweets so calls this._read')
               this._read()
             }
           })
