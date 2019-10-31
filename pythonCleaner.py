@@ -1,7 +1,10 @@
 from string import punctuation
 import xlsxwriter
+import sys
 
 def main():
+	print("OUTPUT: "+ sys.argv[1])
+	"""
 	#check = 0
 	workbook = xlsxwriter.Workbook("twitterData.xlsx")
 	worksheet = workbook.add_worksheet()
@@ -67,4 +70,5 @@ def extractFromUserMentionsBlock(s):
 	return s[0]
 
 
+"""
 main()
