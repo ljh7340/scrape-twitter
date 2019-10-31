@@ -34,6 +34,8 @@ app.post('/', function (req, res) {
     })
     wstream.write("Hey!")
 })
+//var process = spawn('python',["./pythonCleaner.py", req.query.output] );
+
 port = process.env.PORT || 3000;
 app.listen(port, function () {
   console.log('Example app listening on port ' + port)
